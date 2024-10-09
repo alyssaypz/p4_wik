@@ -1,6 +1,6 @@
 import wikipediaapi
 import time
-import queue as Queue
+from queue import Queue
 
 user_agent = "p4_wik (alyssayepez@yahoo.com)"
 wiki = wikipediaapi.Wikipedia(user_agent, "en")
@@ -23,6 +23,9 @@ def wikipedia_solver(start_page,target_page):
     queue = Queue()
     parent = {}
 
+    queue.put(start_page.title)
+    visited.add(start_page.title)
+
     while not queue.empty():
         current_page_title = queue.get()
         if current_page_title == target_page.title: 
@@ -37,16 +40,16 @@ def wikipedia_solver(start_page,target_page):
                 visited.add(link)
                 parent[link] = current_page_title 
 
-path = []
-page_title = target_page.title 
-while page_title != start_page.title:
-    path.append(page_title) 
-    page_title = parent[page_title]
-    path.append(start_page_title) 
-    path.reverse()
-    end_time = time.time()
-    print("this took", end_time - start_time, "second to run") 
-return path
+    path = []
+    page_title = target_page.title 
+    while page_title != start_page.title:
+        path.append(page_title) 
+        page_title = parent[page_title]
+        path.append(start_page.title) 
+        path.reverse()
+        end_time = time.time()
+        print("this took", end_time - start_time, "second to run") 
+    return path
 
 
 
@@ -54,7 +57,7 @@ return path
 
 #creating start and target pages 
 start_page = wiki.page("Pasadena High School (California)") 
-target_page = wiki.page("Honda") 
+target_page = wiki.page("World War II") 
 path = wikipedia_solver(start_page, target_page)
 print(path)
 
